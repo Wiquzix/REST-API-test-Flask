@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, jsonify, json
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from instance.DataBase import *
-from flask_login import UserMixin, LoginManager, login_user, login_required, logout_user, current_user
 
 
 
@@ -12,7 +11,6 @@ app = Flask(__name__)
 app.secret_key = '79d77d1e7f9348c59a384d4376a9e53f'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db.init_app(app)
-manager = LoginManager(app)
 
 uri = '/todo/api/v1.0/task/'
 
