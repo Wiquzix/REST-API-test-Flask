@@ -8,7 +8,6 @@ app = Flask(__name__)
 app.secret_key = '79d77d1e7f9348c59a384d4376a9e53f'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db.init_app(app)
-api.init_app(app)
 
 uri = '/todo/api/v1.0/task/'
 
@@ -64,7 +63,7 @@ class Main(Resource):
     return 'success'
   
 api.add_resource(Main, uri+'<int:id>')
-
+api.init_app(app)
 
 if __name__ == '__main__':
   with app.app_context():
