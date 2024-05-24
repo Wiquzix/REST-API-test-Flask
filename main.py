@@ -3,42 +3,14 @@ from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from instance.DataBase import *
 
-
-
-
 api = Api()
 app = Flask(__name__)
 app.secret_key = '79d77d1e7f9348c59a384d4376a9e53f'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 db.init_app(app)
+api.init_app(app)
 
 uri = '/todo/api/v1.0/task/'
-
-
-tasks1 = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
-# 1
-
-@app.route('/')
-def get_tasks():
-  new_task = Task(title='1', descriptions='1')
-  
-  return tasks1
-
-
-# 2
 
 class Main(Resource):
   def get(self,id):
@@ -52,10 +24,6 @@ class Main(Resource):
   
   def post(self,id):
     task_data = request.get_json()
-    # parser = reqparse.RequestParser()
-    # parser.add_argument('title', type=str)
-    # parser.add_argument('descriptions', type=str)
-    # task[id] = parser.parse_args()
     if not task_data:
       return {'message': 'No input data provided'}, 400
     description = task_data.get('description')
@@ -88,7 +56,6 @@ class Main(Resource):
     db.session.commit()
     return {'message': 'Task edit', 'task': {'id': task.id, 'title':task.title,\
       'description': task.description}}, 200
-
     
   def delete(self,id):
     task = Task.query.get(id)
@@ -97,8 +64,6 @@ class Main(Resource):
     return 'success'
   
 api.add_resource(Main, uri+'<int:id>')
-api.init_app(app)
-
 
 
 if __name__ == '__main__':
